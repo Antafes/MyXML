@@ -2,6 +2,7 @@ package myXML;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,11 +23,13 @@ public class XMLParser
 	private DocumentBuilderFactory factory;
 	private DocumentBuilder builder;
 	private Document document;
+	private ArrayList<Exception> exceptionList;
 
-	public XMLParser(String schema)
+	public XMLParser(InputStream schema)
 	{
-		this.validator = new XMLValidator(new File(schema));
+		this.exceptionList = new ArrayList<>();
 		this.factory = DocumentBuilderFactory.newInstance();
+		this.validator = new XMLValidator(schema);
 
 		try
 		{
@@ -34,7 +37,35 @@ public class XMLParser
 		}
 		catch(ParserConfigurationException e)
 		{
+			this.exceptionList.add(e);
 			System.out.println("Problem occured while creating the document builder.");
+		}
+	}
+
+	public ArrayList<Exception> getExceptionList()
+	{
+		return this.exceptionList;
+	}
+
+	public Exception getLastException()
+	{
+		return this.exceptionList.get(this.exceptionList.size() - 1);
+	}
+
+	public void printExceptions()
+	{
+		System.out.println("Exception in XMLParser thrown.");
+		for (int i = 0; i < this.getExceptionList().size(); i++)
+		{
+			Exception ex = this.getExceptionList().get(i);
+			System.out.println(ex.getClass());
+
+			for (int x = 0; x < ex.getStackTrace().length; x++)
+			{
+				System.out.println(ex.getStackTrace()[x]);
+			}
+			System.out.println(ex.getMessage());
+			System.out.println("");
 		}
 	}
 
@@ -51,7 +82,10 @@ public class XMLParser
 			{
 				this.document = this.builder.parse(path);
 			}
-			catch(SAXException | IOException e) {}
+			catch(SAXException | IOException e)
+			{
+				this.exceptionList.add(e);
+			}
 
 			this.document.getDocumentElement().normalize();
 

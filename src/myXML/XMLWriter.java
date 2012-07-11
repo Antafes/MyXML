@@ -6,6 +6,8 @@
 package myXML;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -33,10 +35,11 @@ public class XMLWriter
 	private DocumentBuilder builder;
 	private Document document;
 	private Element root;
+	private ArrayList<Exception> exceptionList;
 
-	public XMLWriter(String schema, String rootElement)
+	public XMLWriter(InputStream schema, String rootElement)
 	{
-		this.validator = new XMLValidator(new File(schema));
+		this.validator = new XMLValidator(schema);
 		this.prepare(rootElement);
 	}
 
@@ -57,7 +60,35 @@ public class XMLWriter
 		}
 		catch(ParserConfigurationException e)
 		{
+			this.exceptionList.add(e);
 			System.out.println("Problem occured while creating the document builder.");
+		}
+	}
+
+	public ArrayList<Exception> getExceptionList()
+	{
+		return this.exceptionList;
+	}
+
+	public Exception getLastException()
+	{
+		return this.exceptionList.get(this.exceptionList.size() - 1);
+	}
+
+	public void printExceptions()
+	{
+		System.out.println("Exception in XMLWriter thrown.");
+		for (int i = 0; i < this.getExceptionList().size(); i++)
+		{
+			Exception ex = this.getExceptionList().get(i);
+			System.out.println(ex.getClass());
+
+			for (int x = 0; x < ex.getStackTrace().length; x++)
+			{
+				System.out.println(ex.getStackTrace()[x]);
+			}
+			System.out.println(ex.getMessage());
+			System.out.println("");
 		}
 	}
 
@@ -117,11 +148,11 @@ public class XMLWriter
 		}
 		catch (TransformerConfigurationException ex)
 		{
-			Logger.getLogger(XMLWriter.class.getName()).log(Level.SEVERE, null, ex);
+			this.exceptionList.add(ex);
 		}
 		catch (TransformerException ex)
 		{
-			Logger.getLogger(XMLWriter.class.getName()).log(Level.SEVERE, null, ex);
+			this.exceptionList.add(ex);
 		}
 	}
 }
