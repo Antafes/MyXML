@@ -6,6 +6,7 @@
 package myXML;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,8 +137,16 @@ public class XMLWriter
 
 			if (!xmlFile.exists())
 			{
-				File path = new File(xmlFile.getParent());
-				path.mkdirs();
+				try
+				{
+					File path = new File(xmlFile.getParent());
+					path.mkdirs();
+					xmlFile.createNewFile();
+				}
+				catch (IOException ex)
+				{
+					this.exceptionList.add(ex);
+				}
 			}
 
 			TransformerFactory transFactory = TransformerFactory.newInstance();
