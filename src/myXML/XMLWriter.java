@@ -226,6 +226,20 @@ public class XMLWriter
      *
      * @param name
      * @param value
+     * @param attributes
+     *
+     * @return Element
+     */
+    public Element addChild(String name, String value, HashMap<String, String> attributes)
+    {
+        return this.addChild(this.root, name, value, attributes);
+    }
+
+    /**
+     * Add a child element to the root element with a name and a value
+     *
+     * @param name
+     * @param value
      *
      * @return Element
      */
