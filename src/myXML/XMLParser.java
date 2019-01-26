@@ -1,11 +1,15 @@
 package myXML;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -176,28 +180,43 @@ public class XMLParser
     {
         if (stream != null)
         {
-            if (this.validator != null && !this.validator.validate(stream))
-            {
-                return false;
-            }
-
             try
             {
-                this.document = this.builder.parse(stream);
-                this.document.getDocumentElement().normalize();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                int n;
+                while ((n = stream.read(buf)) >= 0)
+                    baos.write(buf, 0, n);
+                byte[] content = baos.toByteArray();
 
-                return true;
+                InputStream is1 = new ByteArrayInputStream(content);
+
+                if (this.validator != null && !this.validator.validate(is1))
+                {
+                    return false;
+                }
+
+                try
+                {
+                    InputStream is2 = new ByteArrayInputStream(content);
+                    this.document = this.builder.parse(is2);
+                    this.document.getDocumentElement().normalize();
+
+                    return true;
+                }
+                catch(SAXException | IOException e)
+                {
+                    this.exceptionList.add(e);
+                    return false;
+                }
             }
-            catch(SAXException | IOException e)
+            catch(IOException ex)
             {
-                this.exceptionList.add(e);
-                return false;
+                Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null,ex);
             }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -321,6 +340,50 @@ public class XMLParser
     }
 
     /**
+     * Get an elements direct value.
+     *
+     * @param element
+     *
+     * @return
+     */
+    public static String getElementValue(Element element) {
+        return element.getFirstChild().getNodeValue();
+    }
+
+    /**
+     * Get an elements direct value and parse it into an integer.
+     *
+     * @param element
+     *
+     * @return
+     */
+    public static int getElementValueInt(Element element) {
+        return Integer.parseInt(XMLParser.getElementValue(element));
+    }
+
+    /**
+     * Get an elements direct value and parse it into an integer.
+     *
+     * @param element
+     *
+     * @return
+     */
+    public static double getElementValueDouble(Element element) {
+        return Double.parseDouble(XMLParser.getElementValue(element));
+    }
+
+    /**
+     * Get an elements direct value and parse it into an integer.
+     *
+     * @param element
+     *
+     * @return
+     */
+    public static boolean getElementValueBoolean(Element element) {
+        return Boolean.parseBoolean(XMLParser.getElementValue(element));
+    }
+
+    /**
      * Get all tags inside of the defined element with the given tag name.
      *
      * @param tag     The tag to search for.
@@ -332,13 +395,15 @@ public class XMLParser
     {
         ArrayList<Element> elements = new ArrayList<>();
 
-        NodeList list = element.getElementsByTagName(tag).item(0).getChildNodes();
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            Node node = (Node) list.item(i);
+        if (element.hasChildNodes() && element.getElementsByTagName(tag).getLength() > 0) {
+            NodeList list = element.getElementsByTagName(tag).item(0).getChildNodes();
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Node node = (Node) list.item(i);
 
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                elements.add((Element) node);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    elements.add((Element) node);
+                }
             }
         }
 
