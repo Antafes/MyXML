@@ -1,4 +1,26 @@
-package myXML;
+/*
+ * This file is part of MyXML_v8.
+ *
+ * MyXML_v8 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MyXML_v8 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MyXML_v8. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package MyXML_v8
+ * @author Marian Pollzien <map@wafriv.de>
+ * @copyright (c) 2019, Marian Pollzien
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
+
+package antafes.myXML;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

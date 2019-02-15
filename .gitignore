@@ -8,3 +8,6 @@
 /build
 /nbproject
 /dist
+/.idea
+/target
+MyXML_v8.iml
