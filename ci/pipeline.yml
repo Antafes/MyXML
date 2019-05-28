@@ -1,0 +1,165 @@
+resource_types:
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: teliaoss/github-pr-resource
+
+resources:
+- name: myxml-repo
+  type: git
+  source:
+    uri: https://github.com/Antafes/MyXML
+    branch: master
+    private_key: ((private_key))
+- name: myxml-repo-dev
+  type: git
+  source:
+    uri: https://github.com/Antafes/MyXML
+    branch: dev
+    private_key: ((private_key))
+- name: myxml-repo-pr
+  type: pull-request
+  check_every: 10m
+  source:
+    repository: Antafes/MyXML
+    access_token: ((acccess_token))
+- name: myxml-pre-release
+  type: github-release
+  source:
+    owner: Antafes
+    repository: MyXML
+    pre_release: true
+    release: false
+    access_token: ((acccess_token))
+- name: myxml-release
+  type: github-release
+  source:
+    owner: Antafes
+    repository: MyXML
+    release: true
+    drafts: true
+    access_token: ((acccess_token))
+
+jobs:
+- name: myxml-pr
+  plan:
+    - get: myxml-repo-pr
+      trigger: true
+      version: every
+    - put: myxml-repo-pr
+      params:
+        path: myxml-repo-pr
+        status: pending
+    - task: unit-test
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: maven
+            tag: 3-jdk-8
+        inputs:
+          - name: myxml-repo-pr
+        run:
+          path: ci/test.sh
+          dir: myxml-repo-pr
+        caches:
+          - path: maven
+      on_failure:
+        put: myxml-repo-pr
+        params:
+          path: myxml-repo-pr
+          status: failure
+    - put: myxml-repo-pr
+      params:
+        path: myxml-repo-pr
+        status: success
+
+- name: myxml-dev
+  plan:
+  - get: myxml-pre-release
+  - get: myxml-repo-dev
+    trigger: true
+  - task: build
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: maven
+          tag: 3-jdk-8
+      inputs:
+      - name: myxml-pre-release
+      - name: myxml-repo-dev
+      outputs:
+      - name: dist
+      run:
+        path: ci/build-dev.sh
+        dir: myxml-repo-dev
+      caches:
+        - path: maven
+  - put: myxml-pre-release
+    params:
+     name: dist/name
+     tag: dist/tag
+     commitish: dist/commit_sha
+     globs:
+      - dist/*.zip
+
+- name: myxml
+  plan:
+  - get: myxml-repo
+    trigger: true
+  - get: myxml-pre-release
+  - task: check-version
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: debian
+          tag: stable-slim
+      inputs:
+      - name: myxml-repo
+      - name: myxml-pre-release
+      run:
+        path: ci/check-version.sh
+        dir: myxml-repo
+  - task: build
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: maven
+          tag: 3-jdk-8
+      inputs:
+      - name: myxml-repo
+      outputs:
+      - name: dist
+      run:
+        path: ci/build.sh
+        dir: myxml-repo
+      caches:
+        - path: maven
+  - put: myxml-release
+    params:
+      name: dist/name
+      tag: dist/tag
+      globs:
+      - dist/*.zip
+  - task: maven-deploy
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: maven
+          tag: 3-jdk-8
+      inputs:
+          - name: myxml-repo
+      run:
+        path: ci/deploy.sh
+        dir: myxml-repo
+      caches:
+        - path: maven

@@ -11,3 +11,6 @@
 /.idea
 /target
 MyXML_v8.iml
+
+# CI variables file
+ci/variables.yml
