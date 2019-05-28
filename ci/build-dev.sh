@@ -17,6 +17,6 @@ mvn -Dmaven.test.skip=true clean package
 cp target/*.zip ../dist
 DATE=`date +%d%m%Y%H%M`
 echo "build-$DATE" >> ../dist/name
-TAG=`cat ../myxml-pre-release/tag`
+TAG=`cat ../myxml-release/tag`
 echo "$TAG-$DATE" >> ../dist/tag
 cp .git/ref ../dist/commit_sha
