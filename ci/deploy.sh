@@ -20,6 +20,7 @@ cat > ${M2_HOME}/settings.xml <<EOF
     <servers>
         <server>
             <id>github</id>
+            <username>Antafes</username>
             <password>${ACCESS_TOKEN}</password>
         </server>
     </servers>
