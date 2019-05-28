@@ -37,7 +37,6 @@ resources:
     owner: Antafes
     repository: MyXML
     release: true
-    drafts: true
     access_token: ((acccess_token))
 
 jobs:
