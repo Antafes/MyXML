@@ -10,7 +10,7 @@
 /dist
 /.idea
 /target
-MyXML_v8.iml
+MyXML.iml
 
 # CI variables file
 ci/variables.yml
