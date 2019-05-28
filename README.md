@@ -11,7 +11,7 @@ To import this with Maven please see below.
     <repositories>
         <repository>
             <id>MyXML-mvn-repo</id>
-            <url>https://raw.github.com/Antafes/MyXML/mvn-repo/</url>
+            <url>https://raw.githubusercontent.com/Antafes/MyXML/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
