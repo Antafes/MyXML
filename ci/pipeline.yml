@@ -110,7 +110,7 @@ jobs:
   plan:
   - get: myxml-repo
     trigger: true
-  - get: myxml-pre-release
+  - get: myxml-release
   - task: check-version
     config:
       platform: linux
@@ -121,7 +121,7 @@ jobs:
           tag: stable-slim
       inputs:
       - name: myxml-repo
-      - name: myxml-pre-release
+      - name: myxml-release
       run:
         path: ci/check-version.sh
         dir: myxml-repo

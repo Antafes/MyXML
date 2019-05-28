@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION_REPO=`cat ../myxml-pre-release/version`
+VERSION_REPO=`cat ../myxml-release/version`
 VERSION=`cat VERSION`
 
 if [ "$VERSION_REPO" -ne "$VERSION"]
