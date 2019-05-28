@@ -138,7 +138,6 @@ jobs:
       - name: dist
       run:
         path: ci/build.sh
-        args: ["((acccess_token))"]
         dir: myxml-repo
       caches:
         - path: maven
@@ -160,6 +159,7 @@ jobs:
           - name: myxml-repo
       run:
         path: ci/deploy.sh
+        args: ["((acccess_token))"]
         dir: myxml-repo
       caches:
         - path: maven
