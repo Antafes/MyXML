@@ -17,6 +17,24 @@ cat > ${M2_HOME}/settings.xml <<EOF
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                           https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <activeProfiles>
+        <activeProfile>github</activeProfile>
+    </activeProfiles>
+
+    <profiles>
+        <profile>
+            <id>github</id>
+            <repositories>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Antafes Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/Antafes</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+
     <servers>
         <server>
             <id>github</id>

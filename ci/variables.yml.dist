@@ -1,2 +1,3 @@
-acccess_token: token
+access_token: token
+maven_access_token: maven_token
 private_key: private_key

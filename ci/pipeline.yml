@@ -22,7 +22,7 @@ resources:
   check_every: 10m
   source:
     repository: Antafes/MyXML
-    access_token: ((acccess_token))
+    access_token: ((access_token))
 - name: myxml-pre-release
   type: github-release
   source:
@@ -30,14 +30,14 @@ resources:
     repository: MyXML
     pre_release: true
     release: false
-    access_token: ((acccess_token))
+    access_token: ((access_token))
 - name: myxml-release
   type: github-release
   source:
     owner: Antafes
     repository: MyXML
     release: true
-    access_token: ((acccess_token))
+    access_token: ((access_token))
 
 jobs:
 - name: myxml-pr
@@ -159,7 +159,7 @@ jobs:
           - name: myxml-repo
       run:
         path: ci/deploy.sh
-        args: ["((acccess_token))"]
+        args: ["((maven_access_token))"]
         dir: myxml-repo
       caches:
         - path: maven
