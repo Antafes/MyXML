@@ -270,7 +270,17 @@ public class XMLParser
     public Element getRootElement()
     {
         document = this.getDocument();
-        Node rootNode = document.getChildNodes().item(0);
+        Node rootNode = null;
+
+        for (int i = 0; i < document.getChildNodes().getLength(); i++) {
+            Node node = document.getChildNodes().item(i);
+
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                rootNode = node;
+                break;
+            }
+        }
+
         return (Element) rootNode;
     }
 
