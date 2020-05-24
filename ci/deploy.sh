@@ -27,7 +27,7 @@ cat > ${M2_HOME}/settings.xml <<EOF
             <id>github</id>
             <repositories>
                 <repository>
-                    <id>github</id>
+                    <id>github-myxml</id>
                     <name>GitHub Antafes Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/Antafes</url>
                 </repository>
@@ -37,7 +37,7 @@ cat > ${M2_HOME}/settings.xml <<EOF
 
     <servers>
         <server>
-            <id>github</id>
+            <id>github-myxml</id>
             <username>Antafes</username>
             <password>${ACCESS_TOKEN}</password>
         </server>
