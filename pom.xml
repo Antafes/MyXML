@@ -6,14 +6,14 @@
 
     <groupId>antafes</groupId>
     <artifactId>myxml</artifactId>
-    <version>3.1.6</version>
+    <version>3.1.7</version>
     <packaging>jar</packaging>
 
     <distributionManagement>
         <repository>
             <id>github-myxml</id>
             <name>GitHub Antafes Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Antafes/MyXML</url>
+            <url>https://maven.pkg.github.com/antafes/myxml</url>
         </repository>
     </distributionManagement>
 
