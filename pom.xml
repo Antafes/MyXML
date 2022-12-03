@@ -6,7 +6,7 @@
 
     <groupId>antafes</groupId>
     <artifactId>myxml</artifactId>
-    <version>3.1.7</version>
+    <version>3.1.8</version>
     <packaging>jar</packaging>
 
     <distributionManagement>
