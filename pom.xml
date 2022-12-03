@@ -6,7 +6,7 @@
 
     <groupId>antafes</groupId>
     <artifactId>myxml</artifactId>
-    <version>3.1.7</version>
+    <version>3.1.8</version>
     <packaging>jar</packaging>
 
     <distributionManagement>
@@ -24,15 +24,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.9.8</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
